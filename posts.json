@@ -1,0 +1,15 @@
+{
+  "posts": [
+    {
+      "admissionNumber": "21CS045",
+      "timeStamp": "1663136103948",
+      "text": "First Post!",
+      "photo": "",
+      "video": "",
+      "audio": "",
+      "document": "",
+      "likes": [],
+      "comments": []
+    }
+  ]
+}
