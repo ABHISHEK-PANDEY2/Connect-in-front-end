@@ -20,7 +20,7 @@ const Home = () => {
     <div className="home">
       <div className="post-container">
         <div className="post-inp">
-          <img src={userData[0].profilePic} className="profile-pic" alt="" />
+          {/* <img src={userData[0].profilePic} className="profile-pic" alt="" /> */}
           <input
             type="text"
             placeholder="share a post"

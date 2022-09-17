@@ -41,7 +41,7 @@ const TopNav = () => {
         </div>
         <Link to="/profile">
           <div className="user">
-            <img src={data[0].profilePic} alt="" />
+            {/* <img src={data[0].profilePic} alt="" /> */}
           </div>
         </Link>
       </div>
