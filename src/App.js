@@ -14,13 +14,72 @@ import Signup from "./component/signUp";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [tokenRecieved, setTokenRecieved] = useState(
+    localStorage.getItem("tokenRecieved")
+  );
+  // User authentication
+  useEffect(() => {
+    if (tokenRecieved) {
+      const token = localStorage.getItem("apiToken");
+      async function getAuth() {
+        try {
+          const rawres = await fetch("http://localhost:5000/authTest", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": `${token}`,
+            },
+          });
+          const res = await rawres.json();
+          console.log(res.auth);
+          setIsAuthenticated(res.auth);
+          if (!res.auth) {
+            const refreshToken = localStorage.getItem("refreshToken");
+            console.log("refreshing token");
+            const rawres = await fetch("http://localhost:5000/refresh", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                "x-access-token": `${refreshToken}`,
+              },
+            });
+
+            const res = await rawres.json();
+            localStorage.setItem("apiToken", res.accessToken);
+            // getAuth();
+          }
+        } catch (e) {
+          console.log(e.message);
+          setIsAuthenticated(false);
+          localStorage.setItem("tokenRecieved", false);
+        }
+      }
+      getAuth();
+    }
+  });
+  // userInfo
+  useEffect(() => {
+    async function getUserInfo() {
+      const userData = await fetch("http://localhost:5000/user", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": `${token}`,
+        },
+      });
+    }
+    getUserInfo();
+  });
 
   if (!isAuthenticated) {
     return (
       <Router>
         <Routes>
-          <Route path="/sign-up" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/sign-up"
+            element={<Signup setToken={setTokenRecieved} />}
+          />
+          <Route path="/" element={<Login setToken={setTokenRecieved} />} />
         </Routes>
       </Router>
     );

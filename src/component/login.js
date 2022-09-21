@@ -2,13 +2,40 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import signUpImg from "../images/Signup.png";
 
-const Login = () => {
+const Login = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const style = {
     textDecoration: "none",
     color: "#1db5e5",
   };
+  useEffect(() => {
+    const submitBtn = document.querySelector("button");
+    submitBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      getToken();
+    });
+    async function getToken() {
+      const form = document.getElementById("login-form");
+      const formData = Object.fromEntries(new FormData(form).entries());
+      console.log(formData, JSON.stringify(formData));
+      const rawres = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const res = await rawres.json();
+      localStorage.setItem("apiToken", res.token);
+      localStorage.setItem("refreshToken", res.refreshToken);
+      localStorage.setItem("tokenRecieved", true);
+      localStorage.setItem("username", formData.username);
+      props.setToken(true);
+      console.log(res);
+    }
+  }, []);
   return (
     <div className="login">
       <div className="nav">
@@ -19,11 +46,7 @@ const Login = () => {
         </div>
       </div>
       <div className="login-container">
-        <form
-          action="localhost:5000/login"
-          className="login-form"
-          method="POST"
-        >
+        <form className="login-form" id="login-form">
           <p>Welcome back!</p>
           <input
             id="username"

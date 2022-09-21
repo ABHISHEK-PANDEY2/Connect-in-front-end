@@ -7,14 +7,14 @@ const Home = () => {
   const [postData, setPostData] = useState("");
   const [isPending, setIsPending] = useState(true);
 
-  useEffect(() => {
-    fetch(" http://localhost:8080/posts")
-      .then((res) => res.json())
-      .then((res) => {
-        setIsPending(false);
-        setPostData(res);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(" http://localhost:8080/posts")
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       setIsPending(false);
+  //       setPostData(res);
+  //     });
+  // }, []);
   console.log(postData);
   return (
     <div className="home">
@@ -27,13 +27,12 @@ const Home = () => {
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
-          <input
+          {/* <input
             type="file"
             placeholder="share a post"
             value={file}
             onChange={(e) => setFile(e.targuet.value)}
-          />
-          {file}
+          // /> */}
           <button className="post-btn">Send</button>
         </div>
         {isPending && <h1>Loading...</h1>}
