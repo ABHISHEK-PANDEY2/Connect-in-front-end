@@ -17,10 +17,10 @@ function App() {
   const [tokenRecieved, setTokenRecieved] = useState(
     localStorage.getItem("tokenRecieved")
   );
+  const token = localStorage.getItem("apiToken");
   // User authentication
   useEffect(() => {
     if (tokenRecieved) {
-      const token = localStorage.getItem("apiToken");
       async function getAuth() {
         try {
           const rawres = await fetch("http://localhost:5000/authTest", {
@@ -60,7 +60,7 @@ function App() {
   // userInfo
   useEffect(() => {
     async function getUserInfo() {
-      const userData = await fetch("http://localhost:5000/user", {
+      const userData = await fetch("http://localhost:5000/users", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +68,7 @@ function App() {
         },
       });
     }
-    getUserInfo();
+    // getUserInfo();
   });
 
   if (!isAuthenticated) {

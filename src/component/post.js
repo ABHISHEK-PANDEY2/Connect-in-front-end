@@ -3,7 +3,7 @@ const Post = (props) => {
 
   return (
     <div className="post">
-      <img src={"/"} alt="" />
+      <p>{postData.text}</p>
     </div>
   );
 };

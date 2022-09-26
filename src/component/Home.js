@@ -1,31 +1,72 @@
 import { useState, useEffect } from "react";
 import Post from "./post";
 const Home = () => {
-  const userData = JSON.parse(localStorage.getItem("userData"));
-  const [searchValue, setSearchValue] = useState("");
-  const [file, setFile] = useState("");
-  const [postData, setPostData] = useState("");
+  const [userData, setUserData] = useState("");
+  const [textValue, setTextValue] = useState("");
+  const [posts, setPosts] = useState("");
   const [isPending, setIsPending] = useState(true);
 
-  // useEffect(() => {
-  //   fetch(" http://localhost:8080/posts")
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       setIsPending(false);
-  //       setPostData(res);
-  //     });
-  // }, []);
-  console.log(postData);
+  useEffect(() => {
+    async function userInfo() {
+      const rawres = await fetch("http://localhost:5000/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: localStorage.getItem("username"),
+        }),
+      });
+      const res = await rawres.json();
+      setUserData(res);
+      sessionStorage.setItem("userData", JSON.stringify(res));
+    }
+    userInfo();
+
+    async function getPost() {
+      const rawres = await fetch("http://localhost:5000/posts");
+      const res = await rawres.json();
+      console.log(res);
+      setPosts(res);
+      setIsPending(false);
+    }
+    getPost();
+  }, []);
+
+  useEffect(() => {
+    async function sendPost() {
+      const data = {
+        username: "21CS001",
+        text: textValue,
+        timeStamp: new Date().getTime(),
+      };
+      console.log(data);
+      const rawres = await fetch("http://localhost:5000/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const res = await rawres.json();
+      console.log(`res: ${res}`);
+      setPosts(res);
+    }
+    const postBtn = document.querySelector(".post-btn");
+    postBtn.addEventListener("click", sendPost);
+  }, []);
+
   return (
     <div className="home">
       <div className="post-container">
         <div className="post-inp">
-          {/* <img src={userData[0].profilePic} className="profile-pic" alt="" /> */}
+          <img src={userData.profilePic} className="profile-pic" alt="" />
           <input
+            id="text-post"
             type="text"
             placeholder="share a post"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            value={textValue}
+            onChange={(e) => setTextValue(e.target.value)}
           />
           {/* <input
             type="file"
@@ -36,7 +77,7 @@ const Home = () => {
           <button className="post-btn">Send</button>
         </div>
         {isPending && <h1>Loading...</h1>}
-        {!isPending && postData.map((post, i) => <Post data={post} key={i} />)}
+        {!isPending && posts.map((post, i) => <Post data={post} key={i} />)}
       </div>
     </div>
   );
