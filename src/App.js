@@ -33,6 +33,7 @@ function App() {
           const res = await rawres.json();
           console.log(res.auth);
           setIsAuthenticated(res.auth);
+
           if (!res.auth) {
             const refreshToken = localStorage.getItem("refreshToken");
             console.log("refreshing token");

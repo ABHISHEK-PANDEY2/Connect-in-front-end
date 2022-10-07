@@ -487,5 +487,91 @@ button.post-btn:active {
 .post {
   font-family: "Roboto", sans-serif;
   margin: 15px 0;
+  padding: 40px 30px 20px;
   background-color: white;
+}
+
+.post .user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Poppins", sans-serif;
+  color: rgba(0, 0, 0, 0.425);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.post .user-name {
+  color: black;
+  font-family: "Gilroy-Medium", sans-serif;
+  font-weight: 200;
+  font-size: 16px;
+  margin: 0;
+}
+
+.post .profile-pic {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+.post .content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 1.4rem;
+  justify-content: center;
+}
+
+.post .content a {
+  display: flex;
+  justify-content: center;
+}
+
+.post .post-img {
+  height: auto;
+  width: 100%;
+  max-width: 650px;
+  place-self: center;
+  justify-self: center;
+  align-self: center;
+}
+
+.post .post-footer {
+  display: flex;
+  justify-content: space-around;
+}
+
+.post hr {
+  border: none;
+  height: 1px;
+  width: 100%;
+  margin: 10px 0 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.post .post-footer img {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  cursor: pointer;
+  /* filter: ; */
+}
+
+.post-footer button {
+  background-color: #ffffff00;
+  border: none;
+}
+
+.like-shadow {
+  filter: drop-shadow(#fe0d0d 0px 0px 5px);
+}
+
+img::before {
+  content: "75 likes";
+  position: absolute;
+  top: 0;
+  color: black;
+  height: 20px;
+  width: 50px;
 }

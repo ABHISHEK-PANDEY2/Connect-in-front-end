@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import Post from "./post";
+import axios from "axios";
 const Home = () => {
   const [userData, setUserData] = useState("");
   const [textValue, setTextValue] = useState("");
   const [posts, setPosts] = useState("");
+  const [file, setFile] = useState();
   const [isPending, setIsPending] = useState(true);
 
   useEffect(() => {
@@ -33,51 +35,69 @@ const Home = () => {
     getPost();
   }, []);
 
-  useEffect(() => {
+  const handleSubmit = (e) => {
+    // e.preventDefault();
+    console.log("submit");
     async function sendPost() {
-      const data = {
-        username: "21CS001",
-        text: textValue,
-        timeStamp: new Date().getTime(),
-      };
-      console.log(data);
-      const rawres = await fetch("http://localhost:5000/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const res = await rawres.json();
-      console.log(`res: ${res}`);
-      setPosts(res);
-    }
-    const postBtn = document.querySelector(".post-btn");
-    postBtn.addEventListener("click", sendPost);
-  }, []);
+      try {
+        const user = JSON.parse(sessionStorage.getItem("userData"));
+        console.log(user);
+        const formdata = new FormData();
+        formdata.append("text", textValue.trim());
+        formdata.append("username", user.username);
+        formdata.append("timeStamp", new Date().getTime());
+        formdata.append("profilePic", user.profilePic);
+        formdata.append("sem", user.sem);
+        formdata.append("branch", user.branch);
+        formdata.append("name", user.name);
+        formdata.append("file", file);
 
+        const rawres = await axios.post(
+          "http://localhost:5000/posts",
+          formdata
+        );
+        const res = await rawres.json();
+        console.log(`res: ${res}`);
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+    sendPost();
+  };
+  console.log(file);
+  // console.log(JSON.parse(JSON.stringify(file)));
   return (
     <div className="home">
       <div className="post-container">
-        <div className="post-inp">
-          <img src={userData.profilePic} className="profile-pic" alt="" />
-          <input
-            id="text-post"
-            type="text"
-            placeholder="share a post"
-            value={textValue}
-            onChange={(e) => setTextValue(e.target.value)}
-          />
-          {/* <input
-            type="file"
-            placeholder="share a post"
-            value={file}
-            onChange={(e) => setFile(e.targuet.value)}
-          // /> */}
-          <button className="post-btn">Send</button>
+        <div>
+          <form action="" className="post-inp">
+            <img src={userData.profilePic} className="profile-pic" alt="" />
+            <input
+              id="text-post"
+              type="text"
+              placeholder="share a post"
+              value={textValue}
+              onChange={(e) => setTextValue(e.target.value)}
+              autoComplete="off"
+              required
+            />
+            <input
+              type="file"
+              placeholder="share a post"
+              value={""}
+              onChange={(e) => setFile(e.target.files[0])}
+            />
+            <button className="post-btn" type="submit" onClick={handleSubmit}>
+              Send
+            </button>
+          </form>
         </div>
         {isPending && <h1>Loading...</h1>}
-        {!isPending && posts.map((post, i) => <Post data={post} key={i} />)}
+        {!isPending &&
+          posts
+            .map((post) => post)
+            .reverse()
+            .map((post, i) => <Post data={post} key={i} />)}
       </div>
     </div>
   );
