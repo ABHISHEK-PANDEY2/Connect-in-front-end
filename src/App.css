@@ -8,6 +8,10 @@ body {
   background-color: var(--secodary-color);
 }
 
+.hidden {
+  display: none !important;
+}
+
 .primary {
   font-family: "Roboto", sans-serif;
   color: #ffffff;
@@ -131,7 +135,7 @@ body {
   padding-left: 30px;
   height: 70px;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .form-container {
@@ -329,6 +333,61 @@ button {
   width: 25px;
 }
 
+.top-nav .user img {
+  height: 30px;
+  width: auto;
+  border-radius: 50%;
+}
+
+.top-nav .settings {
+  cursor: pointer;
+  position: relative;
+}
+
+.top-nav .settings .settings-menu {
+  padding: 5px 3px;
+  border-radius: 3px;
+  position: absolute;
+  background-color: white;
+  filter: drop-shadow(grey 0 2px 2px);
+  background-color: white;
+}
+
+.top-nav .settings .settings-menu button {
+  background-color: transparent;
+  border: none;
+}
+
+.top-nav .settings .settings-menu button:hover {
+  background-color: rgba(189, 187, 187, 0.563);
+}
+
+.rotate {
+  animation: rotate 1s ease-out 1;
+}
+
+.rotate-rev {
+  animation: rotate-rev 1s ease-out 1;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes rotate-rev {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(-180deg);
+  }
+}
+
 /* side navbar */
 
 .navbar {
@@ -436,18 +495,57 @@ button {
   width: 70%;
 }
 
-.post-inp {
+.p-form {
+  display: flex;
+  border-radius: 7px;
+  height: 130px;
   padding: 0px 30px;
+  background-color: white;
+  gap: 20px;
+  align-items: center;
+}
+
+.post-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: center;
+}
+
+.post-form .media-inp {
+  /* padding-right: 20px; */
+  display: flex;
+  justify-content: space-around;
+}
+
+.post-form .media-inp span {
+  position: relative;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.media-inp .img-inp {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  font-size: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.post-inp {
   display: flex;
   gap: 10px;
   place-items: center;
-  height: 130px;
-  background-color: white;
 }
 
 .post-inp input {
   height: 45px;
-  width: 60%;
+  width: 100%;
   border: none;
   outline: none;
   background-color: #f5f5f5;
@@ -458,10 +556,11 @@ button {
   font-size: 20px;
 }
 
-.post-inp .profile-pic {
+.p-form .profile-pic {
   height: 80px;
   width: 80px;
   border-radius: 50%;
+  margin-top: -10px;
 }
 
 button.post-btn {
@@ -487,11 +586,13 @@ button.post-btn:active {
 .post {
   font-family: "Roboto", sans-serif;
   margin: 15px 0;
+  border-radius: 7px;
   padding: 40px 30px 20px;
   background-color: white;
 }
 
 .post .user-profile {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -499,6 +600,46 @@ button.post-btn:active {
   color: rgba(0, 0, 0, 0.425);
   font-size: 14px;
   font-weight: 400;
+}
+
+.post .menu {
+  position: relative;
+  padding: 5px;
+  display: flex;
+  margin-left: auto;
+  background-color: transparent;
+  border: none;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.menu .circle {
+  background-color: black;
+  border-radius: 50%;
+  height: 4px;
+  width: 4px;
+}
+
+.menu .menu-displayed {
+  padding: 5px 5px;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 15px;
+  left: -4px;
+  border-radius: 7px;
+  background-color: white;
+  filter: drop-shadow(grey 0 2px 2px);
+}
+
+.menu .menu-link {
+  margin: 5px 3px;
+  border-radius: 3px;
+  background-color: transparent;
+  border: none;
+}
+.menu .menu-link:hover {
+  background-color: rgba(189, 187, 187, 0.563);
 }
 
 .post .user-name {
@@ -510,8 +651,8 @@ button.post-btn:active {
 }
 
 .post .profile-pic {
-  height: 50px;
-  width: 50px;
+  height: 60px;
+  width: 60px;
   border-radius: 50%;
 }
 
@@ -546,7 +687,7 @@ button.post-btn:active {
   border: none;
   height: 1px;
   width: 100%;
-  margin: 10px 0 20px;
+  margin: 10px 0;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -561,17 +702,9 @@ button.post-btn:active {
 .post-footer button {
   background-color: #ffffff00;
   border: none;
+  position: relative;
 }
 
 .like-shadow {
   filter: drop-shadow(#fe0d0d 0px 0px 5px);
-}
-
-img::before {
-  content: "75 likes";
-  position: absolute;
-  top: 0;
-  color: black;
-  height: 20px;
-  width: 50px;
 }

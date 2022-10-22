@@ -1,14 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SearchLogo from "./images/Search-logo.png";
 import message from "./images/chat.png";
 import notification from "./images/notification.png";
 import settings from "./images/gear.png";
-import user from "./images/user.png";
 
 const TopNav = () => {
   const [searchValue, setSearchValue] = useState("");
-  const data = JSON.parse(localStorage.getItem("userData"));
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    setData(JSON.parse(sessionStorage.getItem("userData")));
+  }, []);
+
+  const logout = () => {
+    localStorage.setItem("refreshToken", null);
+    localStorage.setItem("apiToken", null);
+    window.location.reload();
+  };
+
+  const displaySettings = () => {
+    const menu = document.querySelector(".settings-menu");
+    const gearImg = document.querySelector(".settings img");
+    gearImg.classList.toggle("rotate");
+    menu.classList.toggle("hidden");
+  };
+
   return (
     <div className="top-nav primary">
       <div className="logo">
@@ -36,12 +53,15 @@ const TopNav = () => {
         <div className="notification">
           <img src={notification} alt="" />
         </div>
-        <div className="settings">
+        <div className="settings" onClick={displaySettings}>
           <img src={settings} alt="" />
+          <div className="settings-menu hidden">
+            <button onClick={logout}>logout</button>
+          </div>
         </div>
         <Link to="/profile">
           <div className="user">
-            {/* <img src={data[0].profilePic} alt="" /> */}
+            <img src={data?.profilePic} alt="" />
           </div>
         </Link>
       </div>

@@ -33,7 +33,7 @@ const Login = (props) => {
       localStorage.setItem("tokenRecieved", true);
       localStorage.setItem("username", formData.username);
       props.setToken(true);
-      console.log(res);
+      sessionStorage.setItem("userData", JSON.stringify(res.result));
     }
   }, []);
   return (

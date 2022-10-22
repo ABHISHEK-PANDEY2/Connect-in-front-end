@@ -33,7 +33,7 @@ function App() {
           const res = await rawres.json();
           console.log(res.auth);
           setIsAuthenticated(res.auth);
-
+          sessionStorage.setItem("authenticated", res.auth);
           if (!res.auth) {
             const refreshToken = localStorage.getItem("refreshToken");
             console.log("refreshing token");
@@ -60,17 +60,21 @@ function App() {
   });
   // userInfo
   useEffect(() => {
-    async function getUserInfo() {
-      const userData = await fetch("http://localhost:5000/users", {
-        method: "GET",
+    async function userInfo() {
+      const rawres = await fetch("http://localhost:5000/users", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-access-token": `${token}`,
         },
+        body: JSON.stringify({
+          username: localStorage.getItem("username"),
+        }),
       });
+      const res = await rawres.json();
+      sessionStorage.setItem("userData", JSON.stringify(res));
     }
-    // getUserInfo();
-  });
+    userInfo();
+  }, []);
 
   if (!isAuthenticated) {
     return (
